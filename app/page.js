@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import TodoList from './components/TodoList';
 import Link from 'next/link';
 import styles from './page.module.css';
 
@@ -25,14 +26,14 @@ const TodoApp = () => {
         placeholder="Add a new item"
       />
       <button onClick={addItem}>Add</button>
-      <ul>
-        {items.map((item, index) => (
-          <li key={index}>{item}</li>
-        ))}
-      </ul>
-      <Link href="/about" className={styles.link}>
-        Go to Another Page
-      </Link>
+      <TodoList items={items} />
+      <nav>
+        <Link href="/about" className={styles.link}>About</Link>
+        <Link href="/login" className={styles.link}>Login</Link>
+        <Link href="/register" className={styles.link}>Register</Link>
+        <Link href="/create-post" className={styles.link}>Create Post</Link>
+        <Link href="/posts" className={styles.link}>View Posts</Link>
+      </nav>
     </div>
   );
 };
