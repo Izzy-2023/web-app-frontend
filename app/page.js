@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from 'react';
 import Link from 'next/link';
 import styles from './page.module.css';
@@ -28,7 +30,7 @@ const TodoApp = () => {
           <li key={index}>{item}</li>
         ))}
       </ul>
-      <Link href="/another-page" className={styles.link}>
+      <Link href="/about" className={styles.link}>
         Go to Another Page
       </Link>
     </div>
