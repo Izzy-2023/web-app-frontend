@@ -1,3 +1,5 @@
+"use client"; // Add this at the top
+
 import { useEffect, useState } from 'react';
 
 const PostsPage = () => {
@@ -6,7 +8,7 @@ const PostsPage = () => {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const response = await fetch('/api/posts');
+                const response = await fetch('//localhost:5000/api/posts');
                 const data = await response.json();
                 setPosts(data);
             } catch (error) {
@@ -29,7 +31,10 @@ const PostsPage = () => {
                     </li>
                 ))}
             </ul>
+            <button onClick={() => window.history.back()}>Go Back</button>
+
         </div>
+        
     );
 };
 

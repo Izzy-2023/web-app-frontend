@@ -1,3 +1,5 @@
+"use client"; // Ensure this is here to enable client-side rendering
+
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -10,14 +12,14 @@ const CreatePostPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('/api/posts', {
+            const response = await fetch('http://localhost:5000/api/posts', { // Use the backend URL
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ title, content, author }),
             });
             const result = await response.json();
             if (response.ok) {
-                router.push('/posts');
+                router.push('/posts'); // Redirect to posts page after successful creation
             } else {
                 alert(result.message || 'Post creation failed');
             }
@@ -50,9 +52,13 @@ const CreatePostPage = () => {
                     placeholder="Author ID"
                     required
                 />
-                <button type="submit">Create Post</button>
+                <button type="submit">Create Post</button> 
+                
             </form>
+            
+            
         </div>
+        
     );
 };
 

@@ -1,24 +1,27 @@
+"use client"; // Add this at the top
+
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-const LoginPage = () => {
+const RegisterPage = () => {
     const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const router = useRouter();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('/api/users/login', {
+            const response = await fetch('/api/users/create', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password }),
+                body: JSON.stringify({ username, email, password }),
             });
             const result = await response.json();
             if (response.ok) {
-                router.push('/');
+                router.push('/login');
             } else {
-                alert(result.message || 'Login failed');
+                alert(result.message || 'Registration failed');
             }
         } catch (error) {
             console.error('Error:', error);
@@ -27,7 +30,7 @@ const LoginPage = () => {
 
     return (
         <div>
-            <h1>Login</h1>
+            <h1>Register</h1>
             <form onSubmit={handleSubmit}>
                 <input
                     type="text"
@@ -37,16 +40,23 @@ const LoginPage = () => {
                     required
                 />
                 <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Email"
+                    required
+                />
+                <input
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Password"
                     required
                 />
-                <button type="submit">Login</button>
+                <button type="submit">Register</button>
             </form>
         </div>
     );
 };
 
-export default LoginPage;
+export default RegisterPage;

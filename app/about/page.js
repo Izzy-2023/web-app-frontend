@@ -1,4 +1,6 @@
-// pages/about.js
+// app/about/page.js
+
+"use client"; // Add this at the top
 import Link from 'next/link';
 
 const AboutPage = () => {
@@ -12,4 +14,5 @@ const AboutPage = () => {
 };
 
 export default AboutPage;
+
 
