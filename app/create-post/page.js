@@ -1,4 +1,4 @@
-"use client"; // Ensure this is here to enable client-side rendering
+"use client"; // Add this at the top
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -6,22 +6,23 @@ import { useRouter } from 'next/navigation';
 const CreatePostPage = () => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
-    const [author, setAuthor] = useState('');
     const router = useRouter();
 
-    const handleSubmit = async (e) => {
+    const handleCreatePost = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:5000/api/posts', { // Use the backend URL
+            const response = await fetch('http://localhost:5000/api/posts', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ title, content, author }),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({ title, content }),
             });
-            const result = await response.json();
             if (response.ok) {
-                router.push('/posts'); // Redirect to posts page after successful creation
+                router.push('/dashboard'); // Redirect to dashboard after creating the post
             } else {
-                alert(result.message || 'Post creation failed');
+                alert('Failed to create post');
             }
         } catch (error) {
             console.error('Error:', error);
@@ -31,7 +32,7 @@ const CreatePostPage = () => {
     return (
         <div>
             <h1>Create Post</h1>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleCreatePost}>
                 <input
                     type="text"
                     value={title}
@@ -45,20 +46,9 @@ const CreatePostPage = () => {
                     placeholder="Content"
                     required
                 />
-                <input
-                    type="text"
-                    value={author}
-                    onChange={(e) => setAuthor(e.target.value)}
-                    placeholder="Author ID"
-                    required
-                />
-                <button type="submit">Create Post</button> 
-                
+                <button type="submit">Create Post</button>
             </form>
-            
-            
         </div>
-        
     );
 };
 

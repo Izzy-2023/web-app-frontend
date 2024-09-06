@@ -1,20 +1,28 @@
 // app/page.js
-import Link from 'next/link';
-import styles from './page.module.css';
+"use client"; // Add this at the top
 
-const TodoApp = () => {
-  return (
-    <div className={styles.container}>
-      <h1>Welcome to the New App</h1>
-      <nav>
-        <Link href="/about" className={styles.link}>About</Link>
-        <Link href="/login" className={styles.link}>Login</Link>
-        <Link href="/register" className={styles.link}>Register</Link>
-        <Link href="/create-post" className={styles.link}>Create Post</Link>
-        <Link href="/posts" className={styles.link}>View Posts</Link>
-      </nav>
-    </div>
-  );
+import { useRouter } from 'next/navigation';
+
+const HomePage = () => {
+    const router = useRouter();
+
+    const handleLogin = () => {
+        router.push('/login'); // Redirect to the login page
+    };
+
+    const handleRegister = () => {
+        router.push('/register'); // Redirect to the registration page
+    };
+
+    return (
+        <div>
+            <h1>About Us</h1>
+            <p>Welcome to our website! Here we offer a platform to manage your posts effectively.</p>
+            <button onClick={handleLogin}>Login</button>
+            <button onClick={handleRegister}>Register</button>
+        </div>
+    );
 };
 
-export default TodoApp;
+export default HomePage;
+

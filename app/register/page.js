@@ -9,17 +9,17 @@ const RegisterPage = () => {
     const [password, setPassword] = useState('');
     const router = useRouter();
 
-    const handleSubmit = async (e) => {
+    const handleRegister = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('/api/users/create', {
+            const response = await fetch('http://localhost:5000/api/users/create', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, email, password }),
             });
             const result = await response.json();
             if (response.ok) {
-                router.push('/login');
+                router.push('/login'); // Redirect to login page after successful registration
             } else {
                 alert(result.message || 'Registration failed');
             }
@@ -31,7 +31,7 @@ const RegisterPage = () => {
     return (
         <div>
             <h1>Register</h1>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleRegister}>
                 <input
                     type="text"
                     value={username}
@@ -60,3 +60,4 @@ const RegisterPage = () => {
 };
 
 export default RegisterPage;
+

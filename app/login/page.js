@@ -8,9 +8,24 @@ const LoginPage = () => {
     const [password, setPassword] = useState('');
     const router = useRouter();
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
-        // Handle the login logic here
+        try {
+            const response = await fetch('http://localhost:5000/api/users/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password }),
+            });
+            const result = await response.json();
+            if (response.ok) {
+                localStorage.setItem('token', result.token); // Save the token in local storage
+                router.push('/dashboard'); // Redirect to dashboard on successful login
+            } else {
+                alert(result.message || 'Login failed');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
     };
 
     return (
@@ -22,14 +37,16 @@ const LoginPage = () => {
                     placeholder="Username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
+                    required
                 />
                 <input
                     type="password"
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    required
                 />
-                
+                <button type="submit">Login</button>
             </form>
         </div>
     );
