@@ -1,6 +1,7 @@
 // app/layout.js
 
-import './globals.css';
+// import './globals.css';
+import './dashboard/Dashboard.module.css'
 
 export const metadata = {
   title: 'Todo App',

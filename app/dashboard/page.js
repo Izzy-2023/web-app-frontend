@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import styles from './Dashboard.module.css'; // Import the CSS module if used
 
 const DashboardPage = () => {
     const [todos, setTodos] = useState([]);
@@ -20,20 +21,21 @@ const DashboardPage = () => {
     }, []);
 
     const fetchTodos = async () => {
-        try {
-            const response = await fetch('http://localhost:5000/api/todos', {
-                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
-            });
-            const data = await response.json();
-            if (response.ok) {
-                setTodos(data);
-            } else {
-                console.error(data.message);
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
+      try {
+          const token = localStorage.getItem('token');
+          console.log('Fetching todos with token:', token); // Add this line
+          const response = await fetch('http://localhost:5000/api/todos', {
+              headers: { 'Authorization': `Bearer ${token}` },
+          });
+          if (!response.ok) throw new Error('Network response was not ok');
+          const data = await response.json();
+          console.log('Fetched Todos:', data); // Add this line
+          setTodos(data); // Adjust if necessary
+      } catch (error) {
+          console.error('Error fetching todos:', error);
+      }
+  };
+  
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -89,6 +91,11 @@ const DashboardPage = () => {
         }
     };
 
+    const handleLogout = () => {
+        localStorage.removeItem('token'); // Remove token from localStorage
+        router.push('/login'); // Redirect to login page
+    };
+
     return (
         <div>
             <h1>Dashboard</h1>
@@ -112,21 +119,24 @@ const DashboardPage = () => {
                     <button type="button" onClick={() => setEditingTodo(null)}>Cancel</button>
                 )}
             </form>
-            <h2>Your Todos</h2>
-            <ul>
-                {todos.map(todo => (
-                    <li key={todo._id}>
-                        <h3>{todo.title}</h3>
-                        <p>{todo.content}</p>
-                        <button onClick={() => handleEdit(todo)}>Edit</button>
-                        <button onClick={() => handleDelete(todo._id)}>Delete</button>
-                    </li>
-                ))}
-            </ul>
+            <h2 className={styles.todoListTitle}>Your Todos</h2>
+            <ul className={styles.todoList}>
+              {Array.isArray(todos) && todos.length > 0 ? (
+              todos.map(todo => (
+            <li key={todo._id} className={styles.todoItem}>
+                <h3 className={styles.todoTitle}>{todo.title}</h3>
+                <p className={styles.todoContent}>{todo.content}</p>
+                <button onClick={() => handleEdit(todo)}>Edit</button>
+                <button onClick={() => handleDelete(todo._id)}>Delete</button>
+            </li>
+        ))
+    ) : (
+        <p>No todos available</p>
+    )}
+</ul>
+            <button onClick={handleLogout}>Log Out</button>
         </div>
     );
 };
 
 export default DashboardPage;
-
-

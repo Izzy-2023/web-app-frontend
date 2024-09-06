@@ -18,8 +18,8 @@ const LoginPage = () => {
             });
             const result = await response.json();
             if (response.ok) {
-                localStorage.setItem('token', result.token); // Save the token in local storage
-                router.push('/dashboard'); // Redirect to dashboard on successful login
+                localStorage.setItem('token', result.token);
+                router.push('/dashboard');
             } else {
                 alert(result.message || 'Login failed');
             }
@@ -27,6 +27,7 @@ const LoginPage = () => {
             console.error('Error:', error);
         }
     };
+    
 
     return (
         <div>
